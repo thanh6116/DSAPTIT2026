@@ -2760,6 +2760,105 @@ int main()
     }
     return 0;
 }
+// ngoặc đổi chiều ít nhất thành đúng 
+#include<bits/stdc++.h>
+using namespace std;
 
+int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        string s;
+        cin >> s;
+        int open = 0, needSwap = 0;
+        for(char c : s){
+            if(c=='(') open++;
+            else{
+                if(open>0) open--;
+                else needSwap++;
+            }
+        }
+        int ans = (needSwap+1)/2 + (open+1)/2;
+        cout << ans << "\n";
+    }
+}
+//đánh số thứ tự ngoặc
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int t;
+    cin >> t;
+    cin.ignore();
+    while(t--){
+        string s;
+        getline(cin, s);
+        stack<int> st;
+        int cnt = 0;
+        bool first = true;
+        for(int i = 0; i<(int)s.length(); i++){
+            if(s[i]=='('){
+                cnt++;
+                st.push(cnt);
+                if(!first) cout << " ";
+                cout << cnt;
+                first = false;
+            }
+            else if(s[i]==')'){
+                int x = st.top(); st.pop();
+                if(!first) cout << " ";
+                cout << x;
+                first = false;
+            }
+        }
+        cout << "\n";
+    }
+}
+// thay thế ngoặc 
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int t;
+    cin >> t;
+    cin.ignore();
+    while(t--){
+        string s;
+        getline(cin, s);
+        int n = s.length();
+        vector<int> mark(n, -2); // -2: khong phai ngoac, se gan sau
+        stack<int> st;
+        for(int i = 0; i<n; i++){
+            if(s[i]=='('){
+                st.push(i);
+            }
+            else if(s[i]==')'){
+                if(st.empty()){
+                    mark[i] = -1; // ngoac dong du, sai
+                }
+                else{
+                    int pos = st.top(); st.pop();
+                    mark[pos] = 0; // ngoac mo dung
+                    mark[i] = 1;   // ngoac dong dung
+                }
+            }
+        }
+        // cac dau ( con du trong stack chua duoc dong -> sai
+        while(!st.empty()){
+            int pos = st.top(); st.pop();
+            mark[pos] = -1;
+        }
+        string res = "";
+        for(int i = 0; i<n; i++){
+            if(s[i]=='(' || s[i]==')'){
+                res += to_string(mark[i]);
+            }
+            else{
+                res += s[i];
+            }
+        }
+        cout << res << "\n";
+    }
+}
 
 
