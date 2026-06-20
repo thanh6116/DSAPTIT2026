@@ -2162,3 +2162,282 @@ int main()
     }
     return 0;
 }
+//nhà không kề nhau
+// https://code.ptit.edu.vn/student/question/DSAKT110
+// NHÀ KHÔNG KỀ NHAU
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void testCase() {
+    int n; cin >> n;
+    vector<int> a(n), f(n);
+    for (int &i : a) cin >> i;
+    f[0] = a[0];
+    f[1] = max(a[0], a[1]);
+    for (int i = 2; i < n; ++i) {
+        f[i] = max(f[i - 2] + a[i], f[i - 1]);
+    }
+    cout << f[n - 1];
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1; cin >> T;
+    while (T--) {
+        testCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//đánh số thứ tự cặp dấu ngoặc
+#include <bits/stdc++.h>
+using namespace std;
+
+void testCase() {
+    string s; getline(cin, s);
+    int index = 0;
+    stack<int> st;
+    vector<int> res;
+    for (int i = 0; i < s.length(); ++i) {
+        if (s[i] == '(') {
+            index++;
+            st.push(index);
+            res.push_back(index);
+        } else if (s[i] == ')') {
+            res.push_back(st.top());
+            st.pop();
+        }
+    }
+    for (int i : res) cout << i << " ";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1; cin >> T; cin.ignore();
+    while (T--) {
+        testCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//đoạn liên tiếp
+#include <bits/stdc++.h>
+using namespace std;
+
+void testCase() {
+    int n; cin >> n;
+    vector<int> a(n), l(n);
+    for (int &i : a) cin >> i;
+    stack<int> st;
+    for (int i = 0; i < n; ++i) {
+        while (!st.empty() && a[st.top()] <= a[i]) {
+            st.pop();
+        }
+        if (st.empty()) l[i] = 0;
+        else l[i] = st.top() + 1;
+        st.push(i);
+    }
+    for (int i = 0; i < n; ++i) {
+        cout << i - l[i] + 1 << " ";
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1; cin >> T;
+    while (T--) {
+        testCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//tách chữ số
+#include <bits/stdc++.h>
+using namespace std;
+
+void testCase() {
+    long long p; cin >> p;
+    if (p == 1) {
+        cout << 1;
+        return;
+    }
+    int d[10] = {};
+    for (int i = 9; i >= 2; --i) {
+        while (p % i == 0) {
+            p /= i;
+            d[i]++;
+        }
+    }
+    if (p != 1) {
+        cout << -1;
+        return;
+    }
+
+    for (int i = 2; i <= 9; ++i) {
+        for (int j = 1; j <= d[i]; ++j) {
+            cout << i;
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1; cin >> T;
+    while (T--) {
+        testCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//số lượng dấu ngoặc vuông lớn nhất
+#include <bits/stdc++.h>
+using namespace std;
+
+void TestCase() {
+    string s; cin >> s;
+    stack<int> st;
+    st.push(-1);
+    for (int i = 0; i < s.length(); ++i) {
+        if (s[i] == ')' and !st.empty() and s[st.top()] == '(')
+            st.pop();
+        else if (s[i] == ']' and !st.empty() and s[st.top()] == '[')
+            st.pop();
+        else
+            st.push(i);
+    }
+    st.push(s.length());
+    
+    vector<int> v;
+    while (!st.empty()) {
+        v.push_back(st.top());
+        st.pop();
+    }
+    reverse(v.begin(), v.end());
+    // for (int i : v) cout << i << " ";
+
+    int res = 0;
+    for (int i = 1; i < v.size(); ++i) {
+        int count = 0;
+        for (int j = v[i - 1] + 1; j < v[i]; ++j) {
+            if (s[j] == '[')
+                count++;
+        }
+        res = max(res, count);
+    }
+    cout << res;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1;
+    while (T--) {
+        TestCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//hình chữ nhật đơn sắc 
+#include <bits/stdc++.h>
+using namespace std;
+
+long long solve(int a[], int n) {
+    int l[n], r[n];
+    stack<int> st;
+    for (int i = 0; i < n; ++i) {
+        while (!st.empty() && a[st.top()] >= a[i]) {
+            st.pop();
+        }
+        if (st.empty()) l[i] = 0;
+        else l[i] = st.top() + 1;
+        st.push(i);
+    }
+    while (!st.empty()) st.pop();
+    for (int i = n - 1; i >= 0; --i) {
+        while (!st.empty() && a[st.top()] >= a[i]) {
+            st.pop();
+        }
+        if (st.empty()) r[i] = n - 1;
+        else r[i] = st.top() - 1;
+        st.push(i);
+    }
+    long long res = 0;
+    for (int i = 0; i < n; ++i) {
+        res = max(res, (long long)a[i] * (r[i] - l[i] + 1));
+    }
+    return res;
+}
+
+void testCase() {
+    int m, n;
+    cin >> m >> n;
+    int a[n], b[n];
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+        b[i] = m - a[i];
+    }
+    cout << max(solve(a, n), solve(b, n));
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1;
+    while (T--) {
+        testCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//dãy số đẹp
+#include <bits/stdc++.h>
+using namespace std;
+
+void testCase() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &i : a) cin >> i;
+    int res = 0;
+    for (int i = 0; i < n - 1; ++i) {
+        if (max(a[i], a[i + 1]) <= 2 * min(a[i], a[i + 1]))
+            continue;
+        if (a[i] < a[i + 1]) {
+            int now = a[i];
+            while (now * 2 < a[i + 1]) {
+                now *= 2;
+                res++;
+            }
+        } else {
+            int now = a[i];
+            while (now > 2 * a[i + 1]) {
+                now = ceil(1.0 * now / 2);
+                res++;
+            }
+        }
+    }
+    cout << res;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int T = 1; cin >> T;
+    while (T--) {
+        testCase();
+        cout << "\n";
+    }
+    return 0;
+}
+//
