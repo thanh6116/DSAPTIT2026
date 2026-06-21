@@ -3751,3 +3751,41 @@ int main()
         cout << endl;
     }
 }
+// đặt tên ICPC PTIT
+#include<bits/stdc++.h>
+using namespace std;
+int n, k;
+vector<string> c;
+int a[20];
+
+void in(){
+    for(int i = 1; i<=k; i++){
+        cout << c[a[i]];
+        if(i<k) cout << " ";
+    }
+    cout << "\n";
+}
+
+void Try(int i, int start){
+    for(int j = start; j<=n-(k-i); j++){
+        a[i] = j;
+        if(i==k) in();
+        else Try(i+1, j+1);
+    }
+}
+
+int main(){
+    int nn, kk;
+    cin >> nn >> kk;
+    vector<string> tmp(nn);
+    for(int i = 0; i<nn; i++) cin >> tmp[i];
+    sort(tmp.begin(), tmp.end());
+    tmp.erase(unique(tmp.begin(), tmp.end()), tmp.end());
+
+    n = tmp.size();
+    k = kk;
+    c.resize(n+1);
+    for(int i = 1; i<=n; i++) c[i] = tmp[i-1];
+
+    Try(1, 1);
+}
