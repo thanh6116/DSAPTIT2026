@@ -3789,3 +3789,38 @@ int main(){
 
     Try(1, 1);
 }
+// các số cạnh nhau không liên tiếp 
+#include<bits/stdc++.h>
+using namespace std;
+int n, a[15], ok[15];
+
+void in(){
+    for(int i = 1; i<=n; i++){
+        cout << a[i];
+    }
+    cout << "\n";
+}
+
+void Try(int i){
+    for(int j = 1; j<=n; j++){
+        if(ok[j]==0){
+            if(i>1 && abs(a[i-1]-j)==1) continue;
+            a[i] = j;
+            ok[j] = 1;
+            if(i==n) in();
+            else Try(i+1);
+            ok[j] = 0;
+        }
+    }
+}
+
+int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        cin >> n;
+        memset(ok, 0, sizeof(ok));
+        Try(1);
+        cout << "\n";
+    }
+}
