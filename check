@@ -3710,6 +3710,110 @@ int main()
         cout << endl;
     }
 }
+// Cây nhị phân gần đây
+#include <bits/stdc++.h>
+using namespace std;
+
+int N;
+int A[10005];
+
+void inorder(int i) {
+    if (i >= N) return;
+    inorder(2*i + 1);      // duy?t con trái
+    cout << A[i] << " ";   // in node hi?n t?i
+    inorder(2*i + 2);      // duy?t con ph?i
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        cin >> N;
+        for (int i = 0; i < N; i++) cin >> A[i];
+        inorder(0);
+        cout << "\n";
+    }
+    return 0;
+}
+// bài toán cái túi 0-1
+ll n, m, res;
+ll dp[1005][1005];
+pair<ll, ll> a[1005];
+
+void solve()
+{
+    for(int i = 1; i <= n; ++i)
+    {
+        for(int j = 1; j <= m; ++j)
+        {
+            if(j < a[i].fi) dp[i][j] = dp[i - 1][j];
+            else dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - a[i].fi] + a[i].se);
+            res = max(res, dp[i][j]);
+        }
+    }
+}
+
+int main()
+{
+    faster();
+    int t = 1;
+    cin >> t;
+    while(t--)
+    {
+        res = 0;
+        cin >> n >> m;
+        for(int i = 1; i <= n; ++i) cin >> a[i].fi;
+        for(int i = 1; i <= n; ++i) cin >> a[i].se;
+        solve();
+        cout << res << endl;
+    }
+    return 0;
+}
+// xâu con đối xứng dài nhất 
+int lcs(string &s)
+{
+    int res = 1;
+    int len = s.sz;
+    int l, r;
+    for(int i = 1; i < len; ++i)
+    {
+        l = i - 1;
+        r = i;
+        while(l >= 0 and r < len and s[l] == s[r])
+        {
+            --l;
+            ++r;
+        }
+        ++l;
+        --r;
+        if(s[l] == s[r] and r - l + 1 > res) res = r - l + 1;
+        l = i - 1;
+        r = i + 1;
+        while(l >= 0 and r < len and s[l] == s[r])
+        {
+            --l;
+            ++r;
+        }
+        ++l;
+        --r;
+        if(s[l] == s[r] and r - l + 1 > res) res = r - l + 1;
+    }
+    return res;
+}
+
+int main()
+{
+    faster();
+    int t = 1;
+    cin >> t;
+    string s;
+    while(t--)
+    {
+        cin >> s;
+        cout << lcs(s) << endl;
+    }
+    return 0;
+}
 
 
 
